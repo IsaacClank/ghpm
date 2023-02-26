@@ -1,23 +1,24 @@
 ---
 name: Bug report
 about: Template for creating bug report
-title: ''
+title: 'Bug - '
 labels: bug
 assignees: IsaacClank
 
 ---
 
-**Bug description**
+## Bug description
+
 Please give a concise description of the problem.
 
-**How to reproduce**
+## How to reproduce
+
 List of steps to reproduce.
 
-**Expected behavior**
+## Expected behavior
+
 What is the expected behavior?
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+## Context
 
-**Context**
 Optional additional context if needed.

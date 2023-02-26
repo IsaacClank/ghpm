@@ -1,20 +1,20 @@
 ---
-name: Feature/enhancement request
+name: Change request
 about: Template for enhancement/feature suggestion
-title: ''
+title: 'Request - '
 labels: enhancement
 assignees: IsaacClank
 
 ---
 
-**Why**
+## Why
 
 Please state your reason for this suggestion.
 
-**What**
+## What
 
 Describe the proposed changes
 
-**How**
+## How
 
 Suggestion on how this can be implemented
