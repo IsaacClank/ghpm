@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use serde::{Deserialize, Deserializer};
 use yansi::Paint;
 
 #[derive(Deserialize)]
@@ -9,8 +9,17 @@ pub struct Repo {
   #[serde(rename = "html_url")]
   pub url: String,
 
-  #[serde(rename = "description")]
+  #[serde(rename = "description", deserialize_with = "parse_nullable_string")]
   pub description: String,
+}
+
+fn parse_nullable_string<'de, D>(data: D) -> Result<String, D::Error>
+where
+  D: Deserializer<'de>,
+{
+  Deserialize::deserialize(data).map(|value: Option<String>| {
+    value.unwrap_or(String::from("No description"))
+  })
 }
 
 #[derive(Deserialize)]
