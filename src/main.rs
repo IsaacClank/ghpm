@@ -7,7 +7,7 @@ fn main() {
     let args = args::parse_args();
 
     if args.no_color {
-        yansi::Paint::disable()
+        yansi::Paint::disable();
     }
 
     match args.command {
