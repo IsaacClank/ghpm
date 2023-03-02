@@ -1,4 +1,4 @@
-use crate::{args, github, utils};
+use crate::{args, github, utils, env};
 use std::path::PathBuf;
 
 pub fn search(args: args::SearchArgs) {
@@ -15,7 +15,7 @@ pub fn search(args: args::SearchArgs) {
 }
 
 pub fn install(args: args::InstallArgs) {
-  let hub_path = PathBuf::new().join(std::env::var("GPM_HUB").unwrap());
+  let hub_path = PathBuf::new().join(env::Env::new().installation_root);
 
   let package_name = args.repo.split('/').collect::<Vec<&str>>().join("__");
   let package_root = hub_path.join(format!("opt/{package_name}"));

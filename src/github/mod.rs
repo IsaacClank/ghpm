@@ -4,11 +4,7 @@ mod models;
 use endpoints::Endpoint;
 pub use models::*;
 
-pub fn search_repo(
-  query: &str,
-  limit: Option<u16>,
-  offset: Option<u16>,
-) -> RepositorySearchResult {
+pub fn search_repo(query: &str, limit: Option<u16>, offset: Option<u16>) -> RepositorySearchResult {
   let url = Endpoint::SearchRepositories(query.to_string(), limit, offset)
     .to_full_url()
     .unwrap();
