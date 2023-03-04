@@ -1,5 +1,5 @@
 use crate::{args, env, github, utils};
-use std::path::PathBuf;
+use std::{path::PathBuf, io};
 
 pub fn search(args: args::SearchArgs) {
     let search_result = github::search_repo(&args.query, args.limit, args.offset);
@@ -27,8 +27,8 @@ pub fn install(args: args::InstallArgs) {
 
     let latest_release = github::get_latest_release(&args.repo);
     latest_release.print_download_urls();
-    let selected_asset_index = utils::read_line::<usize>().unwrap();
 
+    let selected_asset_index = utils::read_line_from::<usize>(&mut io::stdin()).unwrap();
     let download_url = latest_release.get_download_url(selected_asset_index);
     github::download(download_url);
 

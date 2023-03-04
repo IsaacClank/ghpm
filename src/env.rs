@@ -16,3 +16,13 @@ impl Env {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    pub fn new_test_instantiates_struct() {
+        assert!(Env::new().installation_root.to_str().is_some());
+    }
+}

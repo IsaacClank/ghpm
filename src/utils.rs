@@ -1,16 +1,10 @@
-use std::{fmt::Debug, fs, io, process::Command, str::FromStr};
+use std::{fs, io, process::Command, str::FromStr};
 
-/// Read a line and return the parsed value of type T
-pub fn read_line<T: FromStr>() -> Result<T, T::Err>
-where
-    <T as FromStr>::Err: Debug,
-{
+/// Read and parse input from a reader
+pub fn read_line_from<T: FromStr>(reader: &mut impl io::Read) -> Result<T, T::Err> {
     let mut value = String::new();
-
-    io::stdin().read_line(&mut value).unwrap();
-    let value = value.trim().parse::<T>()?;
-
-    Ok(value)
+    reader.read_to_string(&mut value).unwrap_or_default();
+    value.trim().parse::<T>()
 }
 
 /// Extract an archive
@@ -40,5 +34,24 @@ pub fn extract_archive(path: &str, destination: &str) {
         }
 
         _ => {}
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    pub fn read_line_test_returns_err_if_cannot_parse_input() {
+        let actual = read_line_from::<usize>(&mut "some input".as_bytes());
+        assert!(actual.is_err());
+    }
+
+    #[test]
+    pub fn read_line_test_returns_value_as_expected_type() {
+        let expected = 156;
+        let actual = read_line_from::<usize>(&mut expected.to_string().as_bytes());
+
+        assert_eq!(Ok(expected), actual);
     }
 }
