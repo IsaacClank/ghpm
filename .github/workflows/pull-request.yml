@@ -8,11 +8,18 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: check
+        run: cargo check
+      - name: test
+        run: cargo test
+
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Check
-        run: cargo check
       - name: Build
         run: cargo build --verbose
