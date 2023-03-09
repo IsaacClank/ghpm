@@ -43,3 +43,9 @@ pub struct SearchArgs {
 pub struct InstallArgs {
     pub repo: String,
 }
+
+impl InstallArgs {
+    pub fn formatted_repo_name(&self) -> String {
+        self.repo.split('/').collect::<Vec<&str>>().join("__")
+    }
+}

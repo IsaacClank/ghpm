@@ -1,15 +1,19 @@
-use std::{fs, io, process::Command, str::FromStr};
+use std::fs;
+use std::io::{BufRead, BufReader, Read};
+use std::process::Command;
+use std::str::FromStr;
 
 /// Read and parse input from a reader
-pub fn read_line_from<T: FromStr>(reader: &mut impl io::Read) -> Result<T, T::Err> {
+pub fn read_line_from<T: FromStr>(source: impl Read) -> Result<T, T::Err> {
+    let mut reader = BufReader::new(source);
     let mut value = String::new();
-    reader.read_to_string(&mut value).unwrap_or_default();
+    reader.read_line(&mut value).unwrap();
     value.trim().parse::<T>()
 }
 
 /// Extract an archive
-pub fn extract_archive(path: &str, destination: &str) {
-    let extension = path.split('.').last();
+pub fn extract_archive(path_to_archive: &str, destination: &str) {
+    let extension = path_to_archive.split('.').last();
 
     match extension {
         Some("gz") | Some("xz") | Some("tar") => {
@@ -17,7 +21,7 @@ pub fn extract_archive(path: &str, destination: &str) {
 
             Command::new("tar")
                 .arg("-xf")
-                .arg(path)
+                .arg(path_to_archive)
                 .arg("--directory")
                 .arg(destination)
                 .output()
@@ -26,7 +30,7 @@ pub fn extract_archive(path: &str, destination: &str) {
 
         Some("zip") | Some("7z") => {
             Command::new("unzip")
-                .arg(path)
+                .arg(path_to_archive)
                 .arg("-d")
                 .arg(destination)
                 .output()
