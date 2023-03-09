@@ -1,8 +1,11 @@
 mod endpoints;
 mod models;
 
-use endpoints::Endpoint;
 pub use models::*;
+
+use endpoints::Endpoint;
+use std::env::temp_dir;
+use std::process::Command;
 
 pub fn search_repo(query: &str, limit: Option<u16>, offset: Option<u16>) -> RepositorySearchResult {
     let url = Endpoint::SearchRepositories(query.to_string(), limit, offset)
@@ -22,13 +25,13 @@ pub fn get_latest_release(repo: &str) -> RepositoryRelease {
 }
 
 pub fn download(url: &str) {
-    use std::process::Command;
+    println!("Downloading release asset ...");
 
     Command::new("curl")
         .arg("--output-dir")
-        .arg("/tmp")
+        .arg(temp_dir().to_str().unwrap())
         .arg("-LO")
         .arg(url)
         .output()
-        .unwrap();
+        .expect("Failed to download asset");
 }

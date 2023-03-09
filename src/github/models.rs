@@ -64,13 +64,15 @@ impl RepositoryRelease {
             .for_each(|(index, asset)| println!("{index}. {}", asset.download_url));
     }
 
-    pub fn get_download_url(&self, index: usize) -> &str {
-        &self.assets[index].download_url
+    pub fn get_asset_by_index(&self, index: usize) -> &RepositoryAsset {
+        &self.assets[index]
     }
 }
 
 #[derive(Deserialize)]
 pub struct RepositoryAsset {
+    pub name: String,
+
     #[serde(rename = "browser_download_url")]
     pub download_url: String,
 }
