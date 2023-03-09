@@ -4,6 +4,7 @@ mod args;
 mod commands;
 mod env;
 mod github;
+mod package;
 mod utils;
 
 fn main() {
