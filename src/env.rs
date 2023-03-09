@@ -9,7 +9,7 @@ impl Env {
         Env {
             installation_root: {
                 let home_dir = std::env::var("HOME").unwrap();
-                let home_dir = format!("{home_dir}/.local/bin");
+                let home_dir = format!("{home_dir}/.local/opt");
 
                 PathBuf::new().join(home_dir)
             },
