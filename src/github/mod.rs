@@ -4,7 +4,6 @@ mod models;
 pub use models::*;
 
 use endpoints::Endpoint;
-use std::env::temp_dir;
 use std::process::Command;
 
 pub fn search_repo(query: &str, limit: Option<u16>, offset: Option<u16>) -> RepositorySearchResult {

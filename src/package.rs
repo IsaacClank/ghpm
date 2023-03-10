@@ -18,6 +18,6 @@ impl Package {
     }
 
     pub fn installation_path_as_str(&self) -> &str {
-        &self.installation_path.to_str().unwrap()
+        self.installation_path.to_str().unwrap()
     }
 }

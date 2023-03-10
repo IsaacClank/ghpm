@@ -4,7 +4,7 @@ pub enum Endpoint {
     SearchRepositories(String, Option<u16>, Option<u16>),
 }
 
-impl<'a> Endpoint {
+impl Endpoint {
     #[allow(irrefutable_let_patterns)]
     pub fn to_full_url(&self) -> Result<String, ()> {
         if let Endpoint::SearchRepositories(query, limit, offset) = self {

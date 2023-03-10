@@ -16,7 +16,7 @@ pub struct Repository {
 impl Repository {
     pub fn description_or_default(&self) -> &str {
         match self.description.as_ref() {
-            Some(description) => &description,
+            Some(description) => description,
             None => "No description",
         }
     }

@@ -11,7 +11,7 @@ fn main() {
     let installation_root = env::installation_root();
 
     if installation_root.is_dir() {
-        fs::create_dir_all(&installation_root.to_str().unwrap())
+        fs::create_dir_all(installation_root.to_str().unwrap())
             .expect("Cannot create installation root");
     }
 
