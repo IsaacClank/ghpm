@@ -1,42 +1,47 @@
-use crate::{args, github, utils};
-use std::path::PathBuf;
+use crate::{args, github, package::Package, utils};
+use std::{env::temp_dir, io};
 
 pub fn search(args: args::SearchArgs) {
-  let search_result = github::search_repo(&args.query, args.limit, args.offset);
+    let search_result = github::search_repo(&args.query, args.limit, args.offset);
 
-  println!(
-    "{}",
-    if args.short {
-      search_result.to_string_short()
-    } else {
-      search_result.to_string_long()
-    }
-  );
+    println!(
+        "{}",
+        if args.short {
+            search_result.to_string_short()
+        } else {
+            search_result.to_string_long()
+        }
+    );
 }
 
 pub fn install(args: args::InstallArgs) {
-  let hub_path = PathBuf::new().join(std::env::var("GPM_HUB").unwrap());
+    let package = Package::new(&args.formatted_repo_name());
 
-  let package_name = args.repo.split('/').collect::<Vec<&str>>().join("__");
-  let package_root = hub_path.join(format!("opt/{package_name}"));
+    if package.is_installed() {
+        println!("Package has already been installed");
+        std::process::exit(0);
+    }
 
-  if package_root.exists() {
-    println!("Package already installed");
-    std::process::exit(0);
-  }
+    let latest_release = github::get_latest_release(&args.repo);
+    let selected_asset_index = if latest_release.assets.len() == 1 {
+        0
+    } else {
+        latest_release.print_download_urls();
+        utils::read_line_from::<usize>(&mut io::stdin()).unwrap()
+    };
 
-  let latest_release = github::get_latest_release(&args.repo);
-  latest_release.print_download_urls();
-  let selected_asset_index = utils::read_line::<usize>().unwrap();
+    let selected_asset = latest_release.get_asset_by_index(selected_asset_index);
+    let path_to_downloaded_asset = temp_dir()
+        .join(&selected_asset.name)
+        .to_str()
+        .unwrap()
+        .to_owned();
 
-  let download_url = latest_release.get_download_url(selected_asset_index);
-  github::download(download_url);
+    github::download(&selected_asset.download_url, &path_to_downloaded_asset);
+    utils::extract_archive(
+        &path_to_downloaded_asset,
+        package.installation_path_as_str(),
+    );
 
-  let archive_name = download_url.split('/').last().unwrap().to_string();
-  utils::extract_archive(
-    &format!("/tmp/{archive_name}"),
-    package_root.to_str().unwrap(),
-  );
-
-  // TODO: symlink
+    // TODO: symlink
 }

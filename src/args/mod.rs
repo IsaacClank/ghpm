@@ -1,5 +1,7 @@
 use clap::{command, ArgAction, Args, Parser, Subcommand};
 
+mod parsers;
+
 pub fn parse_args() -> Cli {
     Cli::parse()
 }
@@ -41,5 +43,12 @@ pub struct SearchArgs {
 
 #[derive(Args)]
 pub struct InstallArgs {
+    #[arg(value_parser = parsers::repo_name_is_valid)]
     pub repo: String,
+}
+
+impl InstallArgs {
+    pub fn formatted_repo_name(&self) -> String {
+        self.repo.split('/').collect::<Vec<&str>>().join("__")
+    }
 }
