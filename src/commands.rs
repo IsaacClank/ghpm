@@ -31,10 +31,15 @@ pub fn install(args: args::InstallArgs) {
     };
 
     let selected_asset = latest_release.get_asset_by_index(selected_asset_index);
-    github::download(&selected_asset.download_url);
+    let path_to_downloaded_asset = temp_dir()
+        .join(&selected_asset.name)
+        .to_str()
+        .unwrap()
+        .to_owned();
 
+    github::download(&selected_asset.download_url, &path_to_downloaded_asset);
     utils::extract_archive(
-        temp_dir().join(&selected_asset.name).to_str().unwrap(),
+        &path_to_downloaded_asset,
         package.installation_path_as_str(),
     );
 

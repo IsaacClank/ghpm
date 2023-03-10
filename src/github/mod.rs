@@ -24,12 +24,13 @@ pub fn get_latest_release(repo: &str) -> RepositoryRelease {
     serde_json::from_str(&response).unwrap()
 }
 
-pub fn download(url: &str) {
+/// Download from an url and store result at specified output
+pub fn download(url: &str, output: &str) {
     println!("Downloading release asset ...");
 
     Command::new("curl")
-        .arg("--output-dir")
-        .arg(temp_dir().to_str().unwrap())
+        .arg("--output")
+        .arg(output)
         .arg("-LO")
         .arg(url)
         .output()
