@@ -8,10 +8,11 @@ mod package;
 mod utils;
 
 fn main() {
-    let env = env::Env::new();
+    let installation_root = env::installation_root();
 
-    if !env.installation_root.is_dir() {
-        fs::create_dir_all(&env.installation_root).expect("Cannot create installation root");
+    if installation_root.is_dir() {
+        fs::create_dir_all(&installation_root.to_str().unwrap())
+            .expect("Cannot create installation root");
     }
 
     let args = args::parse_args();

@@ -9,9 +9,7 @@ pub struct Package {
 impl Package {
     pub fn new(name: &str) -> Package {
         Package {
-            installation_path: PathBuf::new()
-                .join(env::Env::new().installation_root)
-                .join(name),
+            installation_path: env::installation_root().join(name),
         }
     }
 
