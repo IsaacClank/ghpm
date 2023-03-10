@@ -1,3 +1,3 @@
-# gpm
+# ghpm
 
-Utility for managing packages from GitHub releases
+GitHub release package manager
